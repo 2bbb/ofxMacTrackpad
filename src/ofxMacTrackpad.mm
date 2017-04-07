@@ -170,8 +170,9 @@ namespace ofx {
                         
                         arg.position.x = p.x;
                         arg.position.y = 1.0f - p.y;
+#ifdef MAC_OS_X_VERSION_10_10
                         arg.isResting = touch.isResting;
-                        
+#endif
                         arg.phase = (touch.phase == NSTouchPhaseAny)
                                   ? TouchPhase::Any
                                   : static_cast<TouchPhase>(touch.phase);
@@ -224,7 +225,9 @@ namespace ofx {
                         
                         arg.position.x = p.x;
                         arg.position.y = 1.0f - p.y;
+#ifdef MAC_OS_X_VERSION_10_10
                         arg.isResting = touch.isResting;
+#endif
                         
                         arg.phase = (touch.phase == NSTouchPhaseAny)
                                   ? TouchPhase::Any
