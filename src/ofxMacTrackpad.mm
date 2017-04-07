@@ -18,9 +18,11 @@ NSEventMask eventMask   = NSEventMaskGesture
                         | NSEventMaskBeginGesture
                         | NSEventMaskEndGesture
                         | NSEventMaskMagnify
-                        | NSEventMaskSmartMagnify
                         | NSEventMaskSwipe
                         | NSEventMaskRotate
+#ifdef MAC_OS_X_VERSION_10_8
+                        | NSEventMaskSmartMagnify
+#endif
 #ifdef MAC_OS_X_VERSION_10_12_1
                         | NSEventMaskDirectTouch
 #endif
