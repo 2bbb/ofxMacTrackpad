@@ -21,8 +21,13 @@ NSEventMask eventMask   = NSEventMaskGesture
                         | NSEventMaskSmartMagnify
                         | NSEventMaskSwipe
                         | NSEventMaskRotate
+#ifdef MAC_OS_X_VERSION_10_12_1
                         | NSEventMaskDirectTouch
-                        | NSEventMaskPressure;
+#endif
+#ifdef MAC_OS_X_VERSION_10_10_3
+                        | NSEventMaskPressure
+#endif
+;
 
 namespace ofx {
     namespace MacTrackpad {
@@ -145,15 +150,15 @@ namespace ofx {
             }
             
             if(event.type == NSEventTypeGesture) {
-                NSArray<NSTouch *> *touches = event.allTouches.allObjects;
+                NSArray<NSTouch *> *touches = [event touchesMatchingPhase:NSTouchPhaseAny inView:nil].allObjects;
                 TouchArg touchEvent;
                 touchEvent.phase = static_cast<EventPhase>(event.phase);
                 touchEvent.timestamp = event.timestamp;
                 for(std::size_t i = 0, size = touches.count; i < size; i++) {
                     NSTouch *touch = touches[i];
-                    if(touch.type == NSTouchTypeDirect) {
-                        continue;
-                    }
+#ifdef MAC_OS_X_VERSION_10_12_1
+                    if(touch.type == NSTouchTypeDirect) continue;
+#endif
                     std::uint64_t identity = reinterpret_cast<std::uint64_t>(touch.identity);;
                     if(currentFingers.find(identity) != currentFingers.end()) {
                         TouchedFinger &arg = currentFingers[identity];
@@ -202,7 +207,7 @@ namespace ofx {
 #ifdef MAC_OS_X_VERSION_10_12_1
             else if(event.type == NSEventTypeDirectTouch) {
                 // Touchbar
-                NSArray<NSTouch *> *touches = event.allTouches.allObjects;
+                NSArray<NSTouch *> *touches = [event touchesMatchingPhase:NSTouchPhaseAny inView:nil].allObjects;
                 TouchArg touchEvent;
                 touchEvent.phase = static_cast<EventPhase>(event.phase);
                 touchEvent.timestamp = event.timestamp;
@@ -252,8 +257,8 @@ namespace ofx {
                 for(const auto &it : currentTouchbarFingers) touchEvent.fingers.push_back(it.second);
                 ofNotifyEvent(multitouchTouchbar, touchEvent);
             }
+#endif
             return event.CGEvent;
         }
-#endif
     };
 };
