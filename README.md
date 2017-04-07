@@ -12,7 +12,9 @@ using MBP Trackpad events on openFrameworks.
 
 ## Tested env
 
-* macOS 10.12.3 + of 0.9.8
+* macOS 10.12.3 + of 0.9.8 + MBP 2016
+* macOS 10.12.3 + of 0.9.8 + MBP 2016 + Magic Trackpad
+* Mac OSX 10.10.3 + of 0.9.6 + MBP 2013
 
 ## Known issue
 
@@ -57,11 +59,11 @@ see example and source code.
 * ofEvent<TouchedFinger> touch;
 * ofEvent<TouchedFinger> release;
 * ofEvent<TouchArg> multitouch;
- 
+
 * ofEvent<TouchedFinger> touchTouchbar;
 * ofEvent<TouchedFinger> releaseTouchbar;
 * ofEvent<TouchArg> multitouchTouchbar;
- 
+
 * ofEvent<PressureArg> pressure;
 * ofEvent<PinchArg> pinch;
 * ofEvent<RotateArg> rotate;
