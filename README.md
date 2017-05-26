@@ -84,6 +84,7 @@ see example and source code.
 
 * TouchPhase phase
 * std::uint64_t identity
+* std::uint64_t deviceID
 * ofPoint position
 * ofVec2f delta
 * bool isResting
