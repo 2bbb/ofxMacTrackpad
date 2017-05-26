@@ -173,7 +173,7 @@ namespace ofx {
 #ifdef MAC_OS_X_VERSION_10_12_1
                     if(touch.type == NSTouchTypeDirect) continue;
 #endif
-                    std::uint64_t identity = reinterpret_cast<std::uint64_t>(touch.identity);;
+                    std::uint64_t identity = reinterpret_cast<std::uint64_t>(touch.identity);
                     if(currentFingers.find(identity) != currentFingers.end()) {
                         TouchedFinger &arg = currentFingers[identity];
                         NSPoint p = touch.normalizedPosition;
@@ -182,6 +182,8 @@ namespace ofx {
                         
                         arg.position.x = p.x;
                         arg.position.y = 1.0f - p.y;
+                        
+                        arg.deviceID = reinterpret_cast<std::uint64_t>(touch.device);
 #ifdef MAC_OS_X_VERSION_10_10
                         arg.isResting = touch.isResting;
 #endif
@@ -197,8 +199,11 @@ namespace ofx {
                         NSPoint p = touch.normalizedPosition;
                         arg.position.x = p.x;
                         arg.position.y = 1.0f - p.y;
-                        arg.isResting = touch.isResting;
+                        arg.deviceID = reinterpret_cast<std::uint64_t>(touch.device);
                         
+#ifdef MAC_OS_X_VERSION_10_10
+                        arg.isResting = touch.isResting;
+#endif
                         arg.phase = (touch.phase == NSTouchPhaseAny)
                                   ? TouchPhase::Any
                                   : static_cast<TouchPhase>(touch.phase);

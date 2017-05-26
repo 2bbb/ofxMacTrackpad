@@ -40,6 +40,7 @@ namespace ofx {
         struct TouchedFinger {
             TouchPhase phase;
             std::uint64_t identity;
+            std::uint64_t deviceID;
             ofPoint position;
             ofVec2f delta;
             bool isResting;

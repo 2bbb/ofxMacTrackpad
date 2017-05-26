@@ -50,13 +50,15 @@ public:
         ofSetColor(255, 0, 0, 128);
         for(auto &finger : touch.fingers) {
             ofPoint last = finger.position - finger.delta * 10;
-            ofDrawLine(ofMap(finger.position.x, 0, 1, size, ofGetWidth() - size),
-                       ofMap(finger.position.y, 0, 1, size, ofGetHeight() - size),
-                       ofMap(last.x, 0, 1, size, ofGetWidth() - size),
-                       ofMap(last.y, 0, 1, size, ofGetHeight() - size));
-            ofDrawCircle(ofMap(finger.position.x, 0, 1, size, ofGetWidth() - size),
-                         ofMap(finger.position.y, 0, 1, size, ofGetHeight() - size),
-                         size);
+            ofSetColor(255, 0, 0, 128);
+            float x0 = ofMap(finger.position.x, 0, 1, size, ofGetWidth() - size),
+                  y0 = ofMap(finger.position.y, 0, 1, size, ofGetHeight() - size),
+                  x1 = ofMap(last.x, 0, 1, size, ofGetWidth() - size),
+                  y1 = ofMap(last.y, 0, 1, size, ofGetHeight() - size);
+            ofDrawLine(x0, y0, x1, y1);
+            ofDrawCircle(x0, y0, size);
+            ofSetColor(255, 255, 255, 128);
+            ofDrawBitmapString(ofVAArgsToString("id: %lu", finger.deviceID), x0, y0);
         }
         
         ofSetColor(255);
