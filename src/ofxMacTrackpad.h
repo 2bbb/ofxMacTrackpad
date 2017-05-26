@@ -43,6 +43,9 @@ namespace ofx {
             ofPoint position;
             ofVec2f delta;
             bool isResting;
+            
+            operator ofPoint &() { return position; }
+            operator ofPoint() const { return position; }
         };
         
         struct TouchArg : BaseArg {
