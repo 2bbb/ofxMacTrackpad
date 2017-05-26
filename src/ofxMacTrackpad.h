@@ -104,6 +104,9 @@ namespace ofx {
         
         void startListening();
         void stopListening();
+            
+        std::vector<TouchedFinger> getTouchedFingers();
+        std::vector<TouchedFinger> getTouchbarFingers();
     };
 };
 

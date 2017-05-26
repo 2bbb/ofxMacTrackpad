@@ -47,6 +47,8 @@ namespace ofx {
         ofEvent<SwipeArg> swipe;
         ofEvent<TwoFingerDoubleTapArg> twoFingerDoubleTap;
         
+        std::map<std::uint64_t, TouchedFinger> currentFingers;
+        std::map<std::uint64_t, TouchedFinger> currentTouchbarFingers;
         CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon);
         bool stopListening(ofEventArgs &arg);
         CFRunLoopRef runLoop;
@@ -82,9 +84,19 @@ namespace ofx {
             stopListening();
         }
 
+        std::vector<TouchedFinger> getTouchedFingers() {
+            std::vector<TouchedFinger> fingers;
+            for(const auto &it : currentFingers) fingers.push_back(it.second);
+            return fingers;
+        }
+
+        std::vector<TouchedFinger> getTouchbarFingers() {
+            std::vector<TouchedFinger> fingers;
+            for(const auto &it : currentTouchbarFingers) fingers.push_back(it.second);
+            return fingers;
+        }
+        
         CGEventRef eventTapCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef eventRef, void *refcon) {
-            static std::map<std::uint64_t, TouchedFinger> currentFingers;
-            static std::map<std::uint64_t, TouchedFinger> currentTouchbarFingers;
             
             if(type == kCGEventTapDisabledByUserInput) return eventRef;
             if(type == kCGEventTapDisabledByTimeout) return eventRef;
