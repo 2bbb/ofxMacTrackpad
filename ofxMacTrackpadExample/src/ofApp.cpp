@@ -9,6 +9,26 @@ class ofApp : public ofBaseApp {
     float rotation{0.0f};
     float zoom{1.0f};
     ofPoint delta;
+    std::map<std::uint64_t, std::uint16_t> deviceIDs;
+    
+    std::uint16_t getDeviceID(const std::uint64_t deviceID) {
+        if(deviceIDs.find(deviceID) == deviceIDs.end()) {
+            deviceIDs[deviceID] = deviceIDs.size();
+        }
+        return deviceIDs[deviceID];
+    }
+    ofColor deviceColor(const std::uint64_t deviceID) {
+        std::uint16_t currentID = getDeviceID(deviceID);
+        switch(currentID % 6) {
+            case 0:  return ofColor::red;
+            case 1:  return ofColor::blue;
+            case 2:  return ofColor::green;
+            case 3:  return ofColor::magenta;
+            case 4:  return ofColor::yellow;
+            default: return ofColor::cyan;
+                
+        }
+    }
 public:
     void setup() {
         ofAddListener(ofxMacTrackpad::multitouch, this, &ofApp::receiveTouch);
@@ -50,7 +70,7 @@ public:
         ofSetColor(255, 0, 0, 128);
         for(auto &finger : touch.fingers) {
             ofPoint last = finger.position - finger.delta * 10;
-            ofSetColor(255, 0, 0, 128);
+            ofSetColor(deviceColor(finger.deviceID), 128);
             float x0 = ofMap(finger.position.x, 0, 1, size, ofGetWidth() - size),
                   y0 = ofMap(finger.position.y, 0, 1, size, ofGetHeight() - size),
                   x1 = ofMap(last.x, 0, 1, size, ofGetWidth() - size),
@@ -58,7 +78,7 @@ public:
             ofDrawLine(x0, y0, x1, y1);
             ofDrawCircle(x0, y0, size);
             ofSetColor(255, 255, 255, 128);
-            ofDrawBitmapString(ofVAArgsToString("id: %lu", finger.deviceID), x0, y0);
+            ofDrawBitmapString(ofVAArgsToString("id: %lu",getDeviceID(finger.deviceID)), x0, y0);
         }
         
         ofSetColor(255);
